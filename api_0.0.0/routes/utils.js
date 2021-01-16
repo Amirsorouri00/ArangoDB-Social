@@ -2,11 +2,11 @@ const query = require("@arangodb").query;
 const aql = require("@arangodb").aql;
 
 const getMutual = (user, student) => {
-  let filter = aql.literal(
-    `filter p.vertices[2]._id == "${student._id}"`
-  )
+    let filter = aql.literal(
+        `filter p.vertices[2]._id == "${student._id}"`
+    )
 
-  const mutual = query`
+    const mutual = query`
     for ver,edg in 1 outbound ${user} graph "student-connect"
       filter edg.type == "points_to"
       for v,e,p in 2 outbound ver graph "student-connect"
@@ -15,14 +15,14 @@ const getMutual = (user, student) => {
         return p.vertices[1]
   `.toArray();
 
-  return mutual;
+    return mutual;
 }
 
 const isfriend = (user, student) => {
-  let filter = aql.literal(
-    `filter v._id == "${student._id}"`
-  )
-  const isfriend = query`
+    let filter = aql.literal(
+        `filter v._id == "${student._id}"`
+    )
+    const isfriend = query`
     for ver,ed in 1 outbound ${user} graph "student-connect"
       filter ed.type == "points_to"
       for v,e in 1 outbound ver graph "student-connect"
@@ -31,34 +31,34 @@ const isfriend = (user, student) => {
         return true
   `.toArray();
 
-  return isfriend;
+    return isfriend;
 }
 
 const getSchool = (student) => {
-  const school = query`
+    const school = query`
     for v,e,p in 1 outbound ${student} graph "student-connect"
       filter e.type == "studies_in"
       return v
   `.toArray();
-  
-  return school;
+
+    return school;
 }
 
 const getTopics = (student) => {
-  const topics = query`
+    const topics = query`
     for v,e,p in 1 outbound ${student} graph "student-connect"
       filter e.type == "interested_in"
       return v
   `.toArray();
-  
-  return topics;
+
+    return topics;
 }
 
 const getPostById = (postKey) => {
-  const literal = aql.literal(`
+    const literal = aql.literal(`
     let v = document("api_Post/${postKey}")
   `)
-  const postById = query`
+    const postById = query`
     ${literal}
     return {
       post: v,
@@ -86,15 +86,15 @@ const getPostById = (postKey) => {
       )
     }
   `.toArray();
-  return postById[0];
+    return postById[0];
 }
 
 const getPosts = (student) => {
-  const postsMadeByStudent = query`
+    //
+    const postsMadeByStudent = query`
     for v,e,p in 1 outbound ${student} graph "student-connect"
       filter e.type == "makes_post"
-      return {
-        post: v,
+      return v
         likes_on_post: (
           for v1,e1 in 1 inbound v graph "student-connect"
             filter e1.type == "likes_post"
@@ -119,22 +119,22 @@ const getPosts = (student) => {
         )
       }
   `.toArray();
-  return postsMadeByStudent.map(item => ({
-    ...item,
-    student,
-  }));
+    return postsMadeByStudent.forEach(item => ({
+        item,
+        student,
+    }));
 }
 
 const getFriends = (user) => {
-  const friends = query`
+    const friends = query`
     for v,e,p in 1 outbound ${user} graph "student-connect"
       filter e.type == "points_to"
       for v1,e1 in 1 outbound v graph "student-connect"
       filter e1.type == "friend"
       return v1
   `.toArray();
-  
-  return friends;
+
+    return friends;
 }
 
 

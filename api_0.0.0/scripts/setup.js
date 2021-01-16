@@ -41,10 +41,10 @@ db._collection(users).ensureIndex({
 
 
 
-const graph_module = require("@arangodb/general-graph");
-const edgeDefinitions = [ {
-  collection: `api_${edgeCollections[0]}`,
-  "from": documentCollections.map(item => `api_${item}`),
-  "to" : documentCollections.map(item => `api_${item}`),
-} ];
-graph_module._create("student-connect", edgeDefinitions);
+// const graph_module = require("@arangodb/general-graph");
+// const edgeDefinitions = [ {
+//   collection: `api_${edgeCollections[0]}`,
+//   "from": documentCollections.map(item => `api_${item}`),
+//   "to" : documentCollections.map(item => `api_${item}`),
+// } ];
+// graph_module._create("student-connect", edgeDefinitions);

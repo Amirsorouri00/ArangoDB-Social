@@ -1,4 +1,4 @@
-'use strict';
+
 const dd = require('dedent');
 const joi = require('joi');
 const httpError = require('http-errors');
@@ -42,7 +42,7 @@ router.get(function (req, res) {
 
 
 router.post(function (req, res) {
-  const {username, ...post } = req.body;
+  const {username, post } = req.body;
   let meta;
   try {
     meta = PostItems.save(post);

@@ -1,4 +1,4 @@
-'use strict';
+
 const dd = require('dedent');
 const joi = require('joi');
 const httpError = require('http-errors');
@@ -39,7 +39,7 @@ router.get(function (req, res) {
 
 
 router.post(function (req, res) {
-  const {post_key, username, ...comment } = req.body;
+  const {post_key, username, comment } = req.body;
   let meta;
   try {
     meta = CommentItems.save(comment);
@@ -142,7 +142,7 @@ router.patch(':key', function (req, res) {
   const patchData = req.body;
   let comment;
   try {
-    CommentItems.update(key, patchData);
+    CommentItems.update(key, patchData);oo
     comment = CommentItems.document(key);
   } catch (e) {
     if (e.isArangoError && e.errorNum === ARANGO_NOT_FOUND) {
